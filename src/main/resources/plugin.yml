@@ -1,0 +1,8 @@
+name: ${name}
+version: ${project.version}
+main: ${mainClass}
+author: royalkingkb
+api-version: 1.16
+commands:
+  banmap:
+    permission: ruinscraft.mapban.banmap
