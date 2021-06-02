@@ -20,17 +20,17 @@ public final class MapNBTUtil {
                 return null;
             }
 
-            NamedTag namedTag;
+            NamedTag tag;
 
             try {
-                namedTag = NBTUtil.read(mapFile);
+                tag = NBTUtil.read(mapFile);
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
             }
 
-            if (namedTag.getTag() instanceof CompoundTag) {
-                CompoundTag root = (CompoundTag) namedTag.getTag();
+            if (tag.getTag() instanceof CompoundTag) {
+                CompoundTag root = (CompoundTag) tag.getTag();
                 if (root.get("data") instanceof CompoundTag) {
                     CompoundTag data = (CompoundTag) root.get("data");
                     if (data.get("colors") instanceof ByteArrayTag) {

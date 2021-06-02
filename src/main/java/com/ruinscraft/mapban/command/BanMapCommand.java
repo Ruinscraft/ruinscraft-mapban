@@ -1,5 +1,7 @@
-package com.ruinscraft.mapban;
+package com.ruinscraft.mapban.command;
 
+import com.ruinscraft.mapban.MapBanManager;
+import com.ruinscraft.mapban.storage.BannedMap;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -11,10 +13,10 @@ import org.bukkit.inventory.meta.MapMeta;
 
 public class BanMapCommand implements CommandExecutor {
 
-    private MapBanPlugin mapBanPlugin;
+    private MapBanManager mapBanManager;
 
-    public BanMapCommand(MapBanPlugin mapBanPlugin) {
-        this.mapBanPlugin = mapBanPlugin;
+    public BanMapCommand(MapBanManager mapBanManager) {
+        this.mapBanManager = mapBanManager;
     }
 
     @Override
@@ -40,8 +42,13 @@ public class BanMapCommand implements CommandExecutor {
         MapMeta mapMeta = (MapMeta) mainHandItem.getItemMeta();
         int mapId = mapMeta.getMapId();
 
-        MapNBTUtil.readColors(player.getWorld().getName(), mapId).thenAccept(byteArrayTag -> {
-        });
+        if (mapBanManager.isBanned(mapId)) {
+            player.sendMessage(ChatColor.RED + "This map is already banned.");
+        } else {
+            BannedMap bannedMap = new BannedMap(mapId, System.currentTimeMillis(), player.getUniqueId());
+            mapBanManager.banMap(bannedMap);
+            player.sendMessage(ChatColor.GOLD + "Banned map with ID: " + mapId);
+        }
 
         return true;
     }
